@@ -1,0 +1,14 @@
+K8s
+minikube start -> need docker start
+kubectl get no
+minikube dashboard
+start minikube dashboard
+kubectl get po -A #all
+
+C:\Users\henri\.kube\config
+
+kubectl create namespace backend
+kubectl get ns
+kubectl get po -n backend
+
+kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0 -n backend #if not -n 'namespace' then default
