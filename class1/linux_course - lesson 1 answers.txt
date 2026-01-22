@@ -1,0 +1,70 @@
+docker exec -it devops2912 bash
+apt install openssh-client -y
+
+mkdir linux_course
+cd linux_course
+mddir week1
+mkdir week2
+cd week1
+echo Welcome to Linux! >> intro.txt
+touch private_data
+chmod 700 private_data
+touch file2.txt
+cd ..
+cd week2
+touch week1.txt
+touch week2.txt
+touch week3.txt
+cd ..
+find . -name "*.txt"
+echo "error: Disk space low" >> log.txt
+echo "info: System rebooted" >> log.txt
+echo "warning: High memory usage" >> log.txt
+grep "error" log.txt
+grep "error" log.txt >> error.log
+5:
+ps
+sleep 300 &
+kill 57
+cd ..
+6:
+df
+du
+df -a >> ./week2/disk_report.txt
+du >> ./week2/disk_report.txt
+
+7:
+apt update && apt install sudo
+sudo apt update && sudo apt install iproute2
+sudo apt update && sudo apt install iputils-ping -y
+ping google.com -c 3 >> ping_output.txt
+
+8:
+sudo apt update && sudo apt install nano
+nano hello.sh
+chmod 700 hello.sh or chmod +x hello.sh
+./hello.sh
+
+9:
+sudo apt update && sudo apt install cron -y
+sudo systemctl enable --now cron
+crontab -e
+* * * * * echo "$(date)" >> /linux_course/timestamp.log
+* * * * * date >> /home/yourusername/linux_course/timestamp.log
+crontab -l
+cat ~/linux_course/timestamp.log
+
+10:
+#Archive the linux_course directory into a tar file named linux_course.tar.
+cd ..
+tar -cvf linux_course.tar ./linux_course
+# Compress the archive using gzip to create linux_course.tar.gz.
+gzip linux_course.tar
+#Verify the archive's contents without extracting it.
+tar -tvf linux_course.tar.gz
+
+
+
+
+
+

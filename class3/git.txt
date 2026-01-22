@@ -1,0 +1,54 @@
+git clone https://github.com/henria21/gitclass.git
+git statux
+git status
+cd C:\Users\henri\OneDrive\Documents\GitHub\gitclass
+git status
+git add Dockerfile
+git status
+git commit Dockerfile -m "adding docker file"
+git status
+git push
+git bransh branch1
+git branch branch1
+git branch
+git branch -a # all local + remote
+git checkout branch1
+git branch
+git diff
+git commit Dockerfile -m "changing docker file"
+git diff
+git log
+git status
+git push -u origin branch1
+
+git log --oneline --graph
+
+
+
+
+doskey /history
+
+git pull origin main
+git merge feature/add-time
+git push
+git commit app.py -m "change greeting 1"
+git push
+
+git checkout feature/add-time
+git commit app.py -m "change greeting 2"
+git push
+
+git checkout main
+
+git commit app.py -m "merged main and feature/add-time message conflict"
+git diff
+git merge feature/add-time
+
+git add .
+git diff
+git merge feature/add-time
+
+git commit  -m "merged main and feature/add-time message conflict"
+git diff
+git push
+git log --oneline --graph

@@ -1,0 +1,20 @@
+net start docker
+docker pull ubuntu:latest
+docker run -dit --name devops2912 ubuntu:latest bash
+docker start devops2912
+docker exec -it devops2912 bash
+exit
+
+docker exec -it devops2912 bash
+apt install openssh-client -y
+
+rancher is replacing docker since is docker cost money now
+12 
+
+docker tag my_py_app:1.0  henria/devops_1 #create another tag for image
+docker push henria/devops_1:latest
+
+
+net stop docker
+
+
