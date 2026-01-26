@@ -1,0 +1,163 @@
+# ---------------------------
+# Namespace
+# ---------------------------
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+---
+# ---------------------------
+# ServiceAccount
+# ---------------------------
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-sa
+  namespace: dev
+---
+# ---------------------------
+# ConfigMap
+# ---------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: dev
+data:
+  ENV: dev
+  LOG_LEVEL: debug
+---
+# ---------------------------
+# Secret
+# ---------------------------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+  namespace: dev
+type: Opaque
+data:
+  password: cGFzcw==
+---
+# ---------------------------
+# PersistentVolumeClaim
+# ---------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-pvc
+  namespace: dev
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# ---------------------------
+# Pod
+# ---------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+  namespace: dev
+spec:
+  containers:
+    - name: app
+      image: nginx
+      ports:
+        - containerPort: 80
+---
+# ---------------------------
+# Deployment
+# ---------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  namespace: dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+        - name: app
+          image: nginx
+          ports:
+            - containerPort: 80
+---
+# ---------------------------
+# Service
+# ---------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+  namespace: dev
+spec:
+  selector:
+    app: demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+# ---------------------------
+# Ingress
+# ---------------------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: dev
+spec:
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app-service
+                port:
+                  number: 80
+---
+# ---------------------------
+# Role
+# ---------------------------
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: dev
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "configmaps"]
+    verbs: ["get", "list"]
+---
+# ---------------------------
+# RoleBinding
+# ---------------------------
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-reader-binding
+  namespace: dev
+subjects:
+  - kind: ServiceAccount
+    name: app-sa
+    namespace: dev
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+

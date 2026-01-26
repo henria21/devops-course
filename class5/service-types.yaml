@@ -1,0 +1,40 @@
+# ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: clusterip-service
+spec:
+  type: ClusterIP
+  selector:
+    app: demo
+  ports:
+    - port: 80
+      targetPort: 80
+
+# NodePort
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeport-service
+spec:
+  type: NodePort
+  selector:
+    app: demo
+  ports:
+    - port: 80
+      nodePort: 30080
+      targetPort: 80
+
+# LoadBalancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: demo
+  ports:
+    - port: 80
+      targetPort: 80
+

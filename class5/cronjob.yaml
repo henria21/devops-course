@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: demo-cron
+spec:
+  schedule: "* * * * *" # Runs every minute
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: demo
+            image: busybox:latest
+            command: ["/bin/sh", "-c", "echo 'Job complete at $(date)'"]
+          restartPolicy: OnFailure
+
