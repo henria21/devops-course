@@ -5,7 +5,7 @@ metadata:
   namespace: dev
 spec:
   rules:
-    - host: example.com
+    - host: demo.local
       http:
         paths:
           - path: /
