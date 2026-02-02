@@ -69,3 +69,8 @@ kubectl get all
 # 1️⃣4️⃣ Cleanup chart directory
 rm -rf my-app values-prod.yaml
 
+
+
+helm upgrade --install yariv-release ./my-service/ -n dev   --create-namespace  --set cron.schedule="* * * * *" --set replicaCount=2 --set daemonset.resources.requests.cpu=200m
+
+helm upgrade --install yariv-release ./my-service/ -n dev   --create-namespace   -f values-dev.yaml 

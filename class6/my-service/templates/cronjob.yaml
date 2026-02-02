@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-cleanup
+spec:
+  # Run every day at midnight: "0 0 * * *"
+  schedule: {{ .Values.cron.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: worker
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            command: ["/bin/sh", "-c", "echo 'Starting maintenance task...'"]
+          restartPolicy: OnFailure
