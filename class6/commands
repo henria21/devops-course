@@ -1,0 +1,71 @@
+# 0️⃣ Verify environment
+kubectl get nodes
+kubectl cluster-info
+helm version
+
+# 1️⃣ Create a new Helm chart
+helm create my-app
+ls my-app
+tree my-app  # optional, if 'tree' installed
+
+# 2️⃣ Render default templates without installing
+helm template my-release ./my-app
+
+# 3️⃣ Edit values.yaml
+vi my-app/values.yaml
+# Minimal changes example:
+# replicaCount: 2
+# image:
+#   repository: nginx
+#   tag: "1.25"
+
+# 4️⃣ Inspect deployment template
+vi my-app/templates/deployment.yaml
+# Look for .Values.replicaCount, .Values.image.repository, .Release.Name
+
+# 5️⃣ Render templates after values change
+helm template my-release ./my-app
+
+# 6️⃣ Install the Helm chart
+helm install my-release ./my-app
+helm list
+kubectl get all
+
+# 7️⃣ Inspect created resources
+kubectl get deployments
+kubectl get pods
+kubectl get services
+kubectl describe deployment my-release-my-app  # optional
+
+# 8️⃣ Upgrade the release (change replicas)
+helm upgrade my-release ./my-app --set replicaCount=3
+kubectl get deployment
+
+# 9️⃣ Check release history
+helm history my-release
+
+# 🔟 Rollback to previous version
+helm rollback my-release 1
+kubectl get deployment
+
+# 1️⃣1️⃣ Introduce a values file (environment style)
+cat <<EOF > values-prod.yaml
+replicaCount: 4
+image:
+  repository: nginx
+  tag: "1.25"
+EOF
+
+helm upgrade my-release ./my-app -f values-prod.yaml
+
+# 1️⃣2️⃣ Debug Helm without touching cluster
+helm template my-release ./my-app
+
+# 1️⃣3️⃣ Uninstall the release
+helm uninstall my-release
+helm list
+kubectl get all
+
+# 1️⃣4️⃣ Cleanup chart directory
+rm -rf my-app values-prod.yaml
+
