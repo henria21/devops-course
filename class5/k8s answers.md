@@ -86,6 +86,8 @@ app-deployment-77cf88dc74   5         5         5       3m54s
 ```
 #### How many ReplicaSets exist after the update?
 2 ReplicaSets now exist.
+
+----------
 #### Why does Kubernetes create a new ReplicaSet?
 Kubernetes creates a new  **ReplicaSet**  during a Deployment update  to manage the  **Rolling Update**  process safely and enable  **Rollbacks**.
  - **Rolling Update Mechanism**
@@ -103,6 +105,7 @@ Kubernetes creates a new  **ReplicaSet**  during a Deployment update  to manage 
 #### Which Service is internal only?
 ClusterIP - Accessible **only inside** the cluster. It provides a stable IP for pods to talk to each other
 
+----------
 #### Which Service is best for production?
 LoadBalancer 
  - This is the best way to expose a single service directly to the internet.
@@ -117,10 +120,13 @@ ingress.networking.k8s.io/app-ingress created
  #### Does Ingress work without an Ingress Controller?
  No, an Ingress  **does not work**  without an Ingress Controller.
 In Kubernetes, there is a strict separation between the "plan" and the "worker".
+
+----------
 **if you deploy an Ingress without a Controller**
  -   **Dormant Rules:**  The Ingress resource will be accepted by the API server and sit in your cluster, but it will remain dormant.
 - **No Entry Point:**  No external IP will be assigned to the Ingress (the  `ADDRESS`  field in  `kubectl get ingress`  will stay empty).
 - **No Routing:**  No traffic will ever reach your services through that Ingress.
+----------
 #### Why not expose every Service directly?
 While you technically can expose every Service directly using the `LoadBalancer` type, it is considered poor practice for several critical reasons::
 1. **High Infrastructure Costs**: Ingress can use one LoadBalancer for multiple services instead of multiple LoadBalancers. Each `LoadBalancer` service typically provisions a dedicated, billable cloud resource.
@@ -170,6 +176,7 @@ secret/app-secret created
 	In large organizations, developers often build the images, but only the  **DevOps/SRE**  team knows the production credentials. Separating config allows for "Separation of Duties"—the image contains the logic, while the environment provides the sensitive data.
 5. **Immutability**
 	Container images should be  **immutable artifacts**. Once a version (e.g.,  `v1.2.3`) is tested and verified in Staging, you want the exact same bytes to run in Production. If you have to rebuild the image to change a config, you are technically running a "new" unverified artifact.
+----------
 #### Why should Secrets be protected with RBAC?
 In Kubernetes, **Secrets**  are the "crown jewels" of your cluster, containing sensitive data like database passwords, API keys, and TLS certificates.  Because these objects are only  **Base64-encoded**  by default (not encrypted), anyone who can "get" or "list" them can instantly read their plain-text values.
 
@@ -224,6 +231,7 @@ In Kubernetes, RBAC is designed with  **Namespace-scoping**  to enforce  **secur
 Namespace-scoped RBAC allows  **Cluster Admins**  to delegate power without giving up full control:
 
 -   A manager can be an "Admin" of the  `dev`  namespace (allowing them to manage their team's resources) without needing any permissions on the  **Nodes**  or  **System**  components.
+----------
 #### What security principle does RBAC enforce?
 RBAC primarily enforces  the  **Principle of Least Privilege** **(PoLP)**.
 
@@ -256,6 +264,8 @@ strategy:
 for given example: CPU, memory and number of replicas.
 in Dev you may need only one replica and less memory and CPU.
 In Production the values for all 3 might be bigger for availability and scalability.
+
+----------
 #### Why are limits mandatory in production?
 In production, limits are mandatory to prevent a single malfunctioning or greedy container from causing a  **cluster-wide meltdown**.
 

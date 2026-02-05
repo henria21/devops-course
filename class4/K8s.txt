@@ -12,3 +12,9 @@ kubectl get ns
 kubectl get po -n backend
 
 kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0 -n backend #if not -n 'namespace' then default
+kubectl get deployments -n dev
+kubectl scale deployment app-deployment --replicas=5 -n dev
+
+volt - used for outside secrets (can sync to k8s)
+https://github.com/yfreifeld/devops-course/blob/main/class5/service-types.yaml
+always use namespace
