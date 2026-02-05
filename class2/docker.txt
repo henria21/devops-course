@@ -1,4 +1,6 @@
-net start docker
+powershell:
+Start-Process "C:\Program Files\Docker\Docker\resources\com.docker.backend.exe" -ArgumentList "-with-frontend=false"
+
 docker pull ubuntu:latest
 docker run -dit --name devops2912 ubuntu:latest bash
 docker start devops2912
