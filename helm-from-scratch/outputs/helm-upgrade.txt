@@ -1,0 +1,30 @@
+Helm Upgrade Output - Placeholder
+===================================
+
+This file will contain the output from: helm upgrade myapp-release ./charts/myapp
+
+Command:
+--------
+helm upgrade myapp-release ./charts/myapp
+
+Expected Output:
+---------------
+Release "myapp-release" has been upgraded successfully
+LAST DEPLOYED: [timestamp]
+NAMESPACE: default
+STATUS: deployed
+REVISION: 2
+
+NOTES:
+The release has been upgraded successfully.
+
+Changes applied:
+- Updated resource configurations
+- New templates rendered
+- Pods will be rolled out according to deployment strategy
+
+To check the rollout status:
+  kubectl rollout status deployment/myapp-release
+
+To view the updated resources:
+  kubectl get all -l app.kubernetes.io/instance=myapp-release

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "myapp.fullname" . }}-daemonset
+  labels:
+    {{- include "myapp.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "myapp.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: daemonset
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "myapp.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: daemonset
+    spec:
+      containers:
+      - name: http-echo
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if .Values.image.args }}
+        args: {{ .Values.image.args | toJson }}
+        {{- end }}
+        ports:
+        - containerPort: 5200

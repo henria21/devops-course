@@ -1,0 +1,176 @@
+Helm Install Output - Placeholder
+==================================
+
+This file will contain the output from: helm install myapp-release ./charts/myapp
+
+Command:
+--------
+helm upgrade --install myapp-release ./charts/myapp -n dev --create-namespace
+
+Output:
+---------------
+Release "myapp-release" does not exist. Installing it now.
+NAME: myapp-release
+LAST DEPLOYED: Thu Feb  5 13:29:05 2026
+NAMESPACE: dev
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+
+Command:
+--------
+NAME: myapp-release
+LAST DEPLOYED: Thu Feb  5 13:36:32 2026
+NAMESPACE: dev
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+RESOURCES:
+==> v1/Service
+NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+myapp-release   ClusterIP   10.103.248.237   <none>        80/TCP    23s
+
+==> v1/DaemonSet
+NAME                      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+myapp-release-daemonset   1         1         1       1            1           <none>          23s
+
+==> v1/Pod(related)
+NAME                            READY   STATUS    RESTARTS   AGE
+myapp-release-daemonset-xsc26   1/1     Running   0          22s
+myapp-release-67d6774878-zc5x9   1/1   Running   0     22s
+myapp-release-daemonset-xsc26    1/1   Running   0     22s
+myapp-release-job-kj468          1/1   Running   0     22s
+
+==> v1/Deployment
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+myapp-release   1/1     1            1           23s
+
+==> v1/Job
+NAME                STATUS    COMPLETIONS   DURATION   AGE
+myapp-release-job   Running   0/1           22s        22s
+
+==> v1/CronJob
+NAME                    SCHEDULE    TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+myapp-release-cronjob   0 * * * *   <none>     False     0        <none>          22s
+
+
+TEST SUITE: None
+
+
+Command To check pod status:
+--------
+kubectl get pods -l app.kubernetes.io/instance=myapp-release  -n dev
+
+Output:
+---------------
+myapp-release-67d6774878-zc5x9   1/1     Running   0          75s
+myapp-release-daemonset-xsc26    1/1     Running   0          75s
+myapp-release-job-kj468          1/1     Running   0          75s
+
+Command To view pod logs:
+--------
+kubectl logs -l app.kubernetes.io/instance=myapp-release  -n dev
+
+Output:
+---------------
+2026/02/05 11:36:34 Server is listening on :5678
+2026/02/05 11:36:34 Server is listening on :5678
+2026/02/05 11:36:34 Server is listening on :5678
+
+Command To describe the deployment:
+--------
+kubectl describe deployment myapp-release -n dev
+
+Output:
+---------------
+Name:                   myapp-release
+Namespace:              dev
+CreationTimestamp:      Thu, 05 Feb 2026 13:36:32 +0200
+Labels:                 app.kubernetes.io/instance=myapp-release
+                        app.kubernetes.io/managed-by=Helm
+                        app.kubernetes.io/name=myapp
+                        app.kubernetes.io/version=1.36
+                        helm.sh/chart=myapp-1.0.0
+Annotations:            deployment.kubernetes.io/revision: 1
+                        meta.helm.sh/release-name: myapp-release
+                        meta.helm.sh/release-namespace: dev
+Selector:               app.kubernetes.io/instance=myapp-release,app.kubernetes.io/name=myapp
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app.kubernetes.io/instance=myapp-release
+           app.kubernetes.io/name=myapp
+  Containers:
+   http-echo:
+    Image:      hashicorp/http-echo:0.2.3
+    Port:       5200/TCP
+    Host Port:  0/TCP
+    Args:
+      -text=Hello from Helm
+    Environment:   <none>
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   myapp-release-67d6774878 (1/1 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  2m17s  deployment-controller  Scaled up replica set myapp-release-67d6774878 from 0 to 1
+
+Command:
+--------
+kubectl get all -n dev
+
+Output:
+---------------
+NAME                                 READY   STATUS    RESTARTS   AGE
+pod/myapp-release-67d6774878-zc5x9   1/1     Running   0          5m17s
+pod/myapp-release-daemonset-xsc26    1/1     Running   0          5m17s
+pod/myapp-release-job-kj468          1/1     Running   0          5m17s
+
+NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+service/myapp-release   ClusterIP   10.103.248.237   <none>        80/TCP    5m18s
+
+NAME                                     DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/myapp-release-daemonset   1         1         1       1            1           <none>          5m18s
+
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/myapp-release   1/1     1            1           5m18s
+
+NAME                                       DESIRED   CURRENT   READY   AGE
+replicaset.apps/myapp-release-67d6774878   1         1         1       5m17s
+
+NAME                                  SCHEDULE    TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/myapp-release-cronjob   0 * * * *   <none>     False     0        <none>          5m17s
+
+NAME                          STATUS    COMPLETIONS   DURATION   AGE
+job.batch/myapp-release-job   Running   0/1           5m17s      5m17s        54m        12h
+
+
+Command:
+--------
+kubectl get configmap -n dev
+
+Output:
+---------------
+NAME               DATA   AGE
+kube-root-ca.crt   1      6m25s
+
+Command:
+--------
+kubectl get secret -n dev
+
+Output:
+---------------
+NAME                                  TYPE                 DATA   AGE
+sh.helm.release.v1.myapp-release.v1   helm.sh/release.v1   1      6m53s

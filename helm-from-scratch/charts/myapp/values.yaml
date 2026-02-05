@@ -1,0 +1,18 @@
+image:
+  repository: hashicorp/http-echo
+  tag: "0.2.3"
+  pullPolicy: IfNotPresent
+  args: ["-text=Hello from Helm"]
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5200
+
+cronJob:
+  schedule: "0 * * * *"
+
+job:
+  backoffLimit: 3

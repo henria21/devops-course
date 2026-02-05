@@ -1,0 +1,28 @@
+Helm Rollback Output - Placeholder
+====================================
+
+This file will contain the output from: helm rollback myapp-release [REVISION]
+
+Command:
+--------
+helm rollback myapp-release 1
+
+Expected Output:
+---------------
+Rollback was a success! Happy Helming!
+LAST DEPLOYED: [timestamp]
+NAMESPACE: default
+STATUS: deployed
+REVISION: 3
+
+Rollback Details:
+- Successfully rolled back from revision 2 to revision 1
+- Resources have been reverted to the previous state
+- Pods will be recreated with previous configurations
+
+To verify the rollback:
+  kubectl rollout history deployment/myapp-release
+  helm status myapp-release
+
+To view the current state after rollback:
+  kubectl get all -l app.kubernetes.io/instance=myapp-release
