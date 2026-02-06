@@ -88,7 +88,7 @@ job:
 ### 5. Job Template
 - **File**: `templates/job.yaml`
 - **Purpose**: Runs a task to completion (one-time execution) with automatic retry capability for batch processing and data loading
-- **Backoff Limit**: 3 retries
+- **Backoff Limit**: 6 retries
 - **In This Chart**: Runs hashicorp/http-echo once with up to 3 automatic retry attempts if it fails
 
 ### 6. ConfigMap Template
@@ -110,6 +110,15 @@ job:
   - `myapp.chart`: Chart name and version
   - `myapp.labels`: Common labels
   - `myapp.selectorLabels`: Selector labels
+
+## Application Configuration and Secrets
+
+- Application configuration (e.g., message text, port) is stored in a ConfigMap, defined in values.yaml under `configMap.data`.
+- Sensitive data (e.g., API token) is stored in a Secret, defined in values.yaml under `secret.data` (base64 encoded).
+- Both ConfigMap and Secret are mounted into the Deployment and DaemonSet:
+  - As environment variables using `envFrom` (ConfigMapRef and SecretRef)
+  - As files using `volumeMounts` at `/etc/config` and `/etc/secret`
+- This allows pods to access configuration and secrets securely and consistently, following Kubernetes best practices.
 
 ## Helm Commands Reference
 
@@ -153,6 +162,40 @@ helm lint ./charts/myapp
 helm template myapp-release ./charts/myapp -n dev
 ```
 
+## Adding and Updating an External Helm Repository
+
+To use charts from external sources, add the repository and update your local cache:
+
+```
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+```
+
+- `helm repo add` registers the Bitnami repository, making its charts available for install.
+- `helm repo update` fetches the latest chart information from all added repositories.
+
+This enables you to install or upgrade charts from Bitnami and other third-party sources.
+
+## Installing External Helm Chart in dev Namespace
+
+To install the Bitnami nginx chart in the dev namespace:
+
+```bash
+helm upgrade --install external-nginx bitnami/nginx -n dev --create-namespace
+```
+
+This command installs (or upgrades) the external-nginx release in the dev namespace, ensuring it does not run in the default namespace.
+
+## Installing External Helm Chart in dev Namespace with Custom Image Tag
+
+To install the Bitnami nginx chart in the dev namespace and set the image tag to 1.23.0:
+
+```bash
+helm upgrade --install external-nginx bitnami/nginx -n dev --set image.tag=1.23.0
+```
+
+This command installs (or upgrades) the external-nginx release in the dev namespace, using the specified nginx image version.
+
 ## Output Locations
 
 All Helm command outputs are stored in the `outputs/` directory:
@@ -168,6 +211,22 @@ All Helm command outputs are stored in the `outputs/` directory:
 2. **Container**: Runs an HTTP echo server on port 5200 that mirrors HTTP requests back to clients
 3. **Minimal Configuration**: Chart is simplified with only essential configuration
 4. **Labels**: All resources include proper Helm labels for tracking
+
+## Helm Lifecycle Explanation
+
+Helm manages the lifecycle of Kubernetes applications through releases:
+- **Install**: Deploys a chart as a new release.
+- **Upgrade**: Updates an existing release to a new chart version or configuration.
+- **Rollback**: Reverts a release to a previous revision.
+- **Uninstall**: Removes a release and all associated resources.
+- **History**: Tracks all revisions and changes for each release.
+
+### Why helm upgrade --install is Preferred
+
+- `helm upgrade --install` combines installation and upgrade in one command.
+- If the release does not exist, it installs; if it does, it upgrades.
+- This approach is idempotent and simplifies automation, CI/CD pipelines, and scripting.
+- It avoids errors from running install on an existing release or upgrade on a missing one.
 
 ---
 

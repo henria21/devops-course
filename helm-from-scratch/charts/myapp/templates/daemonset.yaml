@@ -26,3 +26,20 @@ spec:
         {{- end }}
         ports:
         - containerPort: 5200
+        envFrom:
+        - configMapRef:
+            name: {{ include "myapp.fullname" . }}-configmap
+        - secretRef:
+            name: {{ include "myapp.fullname" . }}-secret
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+        - name: secret
+          mountPath: /etc/secret
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "myapp.fullname" . }}-configmap
+      - name: secret
+        secret:
+          secretName: {{ include "myapp.fullname" . }}-secret
