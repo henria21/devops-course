@@ -3,6 +3,8 @@ Helm Upgrade Output - Placeholder
 
 This file will contain the output from: helm upgrade myapp-release ./charts/myapp
 
+we do so after setting the .Values.image.tag from 0.2.3 to 1.0.0
+
 Command:
 --------
 helm upgrade myapp-release ./charts/myapp -n dev
@@ -11,7 +13,7 @@ Output:
 ---------------
 Release "myapp-release" has been upgraded. Happy Helming!
 NAME: myapp-release
-LAST DEPLOYED: Thu Feb  5 14:13:02 2026
+LAST DEPLOYED: Fri Feb  6 16:13:46 2026
 NAMESPACE: dev
 STATUS: deployed
 REVISION: 2
@@ -36,28 +38,26 @@ To view the updated resources:
   kubectl get all -l app.kubernetes.io/instance=myapp-release -n dev
 Output:
 ---------------  
-NAME                                READY   STATUS    RESTARTS   AGE
-pod/myapp-release-9d74695d8-cxz8m   1/1     Running   0          2m49s
-pod/myapp-release-daemonset-4qmh6   1/1     Running   0          2m48s
-pod/myapp-release-job-cbrr8         1/1     Running   0          2m49s
+NAME                                 READY   STATUS    RESTARTS   AGE
+pod/myapp-release-55d4bbf7f8-49d4x   1/1     Running   0          59s
+pod/myapp-release-daemonset-p5ndt    1/1     Running   0          30s
+pod/myapp-release-job-dkhgp          1/1     Running   0          26m
 
-NAME                    TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
-service/myapp-release   ClusterIP   10.109.39.13   <none>        80/TCP    18m
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/myapp-release   ClusterIP   10.105.18.212   <none>        80/TCP    13m
 
 NAME                                     DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
-daemonset.apps/myapp-release-daemonset   1         1         1       1            1           <none>          18m
+daemonset.apps/myapp-release-daemonset   1         1         1       1            1           <none>          13m
 
 NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/myapp-release   1/1     1            1           18m
+deployment.apps/myapp-release   1/1     1            1           13m
 
 NAME                                       DESIRED   CURRENT   READY   AGE
-replicaset.apps/myapp-release-66c4556ddd   0         0         0       16m
-replicaset.apps/myapp-release-67d6774878   0         0         0       18m
-replicaset.apps/myapp-release-8577756565   0         0         0       5m40s
-replicaset.apps/myapp-release-9d74695d8    1         1         1       2m49s
+replicaset.apps/myapp-release-55d4bbf7f8   1         1         1       59s
+replicaset.apps/myapp-release-67d6774878   0         0         0       13m
 
 NAME                                  SCHEDULE    TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/myapp-release-cronjob   0 * * * *   <none>     False     0        <none>          18m
+cronjob.batch/myapp-release-cronjob   0 * * * *   <none>     False     0        <none>          13m
 
 NAME                          STATUS    COMPLETIONS   DURATION   AGE
-job.batch/myapp-release-job   Running   0/1           2m49s      2m49s
+job.batch/myapp-release-job   Running   0/1           26m        26m

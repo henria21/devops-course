@@ -1,6 +1,6 @@
 image:
   repository: hashicorp/http-echo
-  tag: "0.2.3"
+  tag: "1.0.0"
   pullPolicy: IfNotPresent
   args: ["-text=Hello from Helm"]
 
@@ -13,6 +13,5 @@ service:
 
 cronJob:
   schedule: "0 * * * *"
-
 job:
-  backoffLimit: 3
+  backoflimit: 6

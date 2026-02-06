@@ -18,11 +18,10 @@ charts/myapp/
     ├── service.yaml            # Kubernetes Service
     ├── daemonset.yaml          # Kubernetes DaemonSet
     ├── cronjob.yaml            # Kubernetes CronJob
-    ├── job.yaml                # Kubernetes Job
     ├── configmap.yaml          # Kubernetes ConfigMap (optional)
     └── secret.yaml             # Kubernetes Secret (optional)
 ```
-
+`Remark: Job template was deleted after causing issues with upgrade upon tag version - since needed to delete job before running upgrade`
 ### Chart.yaml Content
 
 ```yaml
@@ -58,7 +57,7 @@ cronJob:
   schedule: "0 * * * *"
 
 job:
-  backoffLimit: 3
+  backoffLimit: 6
 ```
 
 ## Part 2: Template Files

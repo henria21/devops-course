@@ -5,15 +5,12 @@ This file will contain the output from: helm rollback myapp-release [REVISION]
 
 Command:
 --------
-helm rollback myapp-release 1
+helm rollback myapp-release 1 -n dev
 
 Expected Output:
 ---------------
 Rollback was a success! Happy Helming!
-LAST DEPLOYED: [timestamp]
-NAMESPACE: default
-STATUS: deployed
-REVISION: 3
+
 
 Rollback Details:
 - Successfully rolled back from revision 2 to revision 1
@@ -21,8 +18,89 @@ Rollback Details:
 - Pods will be recreated with previous configurations
 
 To verify the rollback:
-  kubectl rollout history deployment/myapp-release
-  helm status myapp-release
+  kubectl rollout history deployment/myapp-release -n dev
+
+Output:
+---------------
+deployment.apps/myapp-release
+REVISION  CHANGE-CAUSE
+2         <none>
+3         <none>
+
+aslo:
+  helm history myapp-release -n dev
+
+REVISION        UPDATED                         STATUS          CHART           APP VERSION     DESCRIPTION
+1               Fri Feb  6 16:01:32 2026        superseded      myapp-1.0.0     1.36            Install complete
+2               Fri Feb  6 16:13:46 2026        superseded      myapp-1.0.0     1.36            Upgrade complete
+3               Fri Feb  6 16:19:35 2026        deployed        myapp-1.0.0     1.36            Rollback to 1
+
+also:  
+  helm status myapp-release -n dev
+
+Output:
+---------------
+NAME: myapp-release
+LAST DEPLOYED: Fri Feb  6 16:19:35 2026
+NAMESPACE: dev
+STATUS: deployed
+REVISION: 3
+DESCRIPTION: Rollback to 1
+RESOURCES:
+==> v1/Service
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+myapp-release   ClusterIP   10.105.18.212   <none>        80/TCP    21m
+
+==> v1/DaemonSet
+NAME                      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+myapp-release-daemonset   1         1         1       1            1           <none>          21m
+
+==> v1/Pod(related)
+NAME                            READY   STATUS    RESTARTS   AGE
+myapp-release-daemonset-4nf2j   1/1     Running   0          3m15s
+myapp-release-67d6774878-s4lxd   1/1   Running   0     3m15s
+myapp-release-daemonset-4nf2j    1/1   Running   0     3m15s
+myapp-release-job-dkhgp          1/1   Running   0     34m
+
+==> v1/Deployment
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+myapp-release   1/1     1            1           21m
+
+==> v1/CronJob
+NAME                    SCHEDULE    TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+myapp-release-cronjob   0 * * * *   <none>     False     0        <none>          21m
+
+
+TEST SUITE: None
+
+---------------
+
 
 To view the current state after rollback:
-  kubectl get all -l app.kubernetes.io/instance=myapp-release
+  kubectl get all -l app.kubernetes.io/instance=myapp-release -n dev
+
+Output:
+--------------- 
+NAME                                 READY   STATUS    RESTARTS   AGE
+pod/myapp-release-67d6774878-s4lxd   1/1     Running   0          4m27s
+pod/myapp-release-daemonset-4nf2j    1/1     Running   0          4m27s
+pod/myapp-release-job-dkhgp          1/1     Running   0          35m
+
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/myapp-release   ClusterIP   10.105.18.212   <none>        80/TCP    22m
+
+NAME                                     DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/myapp-release-daemonset   1         1         1       1            1           <none>          22m
+
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/myapp-release   1/1     1            1           22m
+
+NAME                                       DESIRED   CURRENT   READY   AGE
+replicaset.apps/myapp-release-55d4bbf7f8   0         0         0       10m
+replicaset.apps/myapp-release-67d6774878   1         1         1       22m
+
+NAME                                  SCHEDULE    TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/myapp-release-cronjob   0 * * * *   <none>     False     0        <none>          22m
+
+NAME                          STATUS    COMPLETIONS   DURATION   AGE
+job.batch/myapp-release-job   Running   0/1           35m        35m 
