@@ -1,0 +1,21 @@
+helm upgrade --install external-nginx bitnami/nginx -n dev --set image.tag=1.23.0 -f values_dev.yaml
+helm template ./my_service # or specific yaml
+helm rollback my-app 3
+helm list
+kubctl config get-contexts
+
+you can add secret thru helm)do not keep tokens an such in helm), but keep secret.yaml and apply thru kubectl apply - better to keep secret in vault, better to sync from vault to cluster
+manually:
+kubectl edit secret <sectertNAme> -n dev
+
+you can take a 3rd party helm chart like prometheus, and 
+helm upgrade --install xxxx -n dev -f values.yaml
+repos:
+nitnami
+
+
+question bonus\5) once you download the chart to your local(like ngnix) and update the config using -f pro.valus.yaml
+than you can override default ports - answer: you have more control now
+
+
+
