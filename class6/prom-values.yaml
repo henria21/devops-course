@@ -1,0 +1,7 @@
+configmapReload:
+  prometheus:
+    enabled: true
+    image:
+      tag: v0.88.0
+    containerPort: 8181
+    containerPortName: metrics
