@@ -1,0 +1,22 @@
+git heb actions
+cd with argo cd
+
+git repository template - when you create a new repository as template
+and than create repository based on this template
+have:.gitignore .docker file, app folder, requiernents.txt(dependencies), ...
+
+ci: git hub actions/ GitLab, bitbucket, jenkins
+
+githubstatus.com
+
+pitest - for testing python
+
+jobs:
+	build:
+		runs-on: ubunto-latest # its a freee machine from ubunto that can actually run your buils, it is in use for bigger tasks as well
+
+runs on:
+	branches: 
+		dev*
+		master
+		
