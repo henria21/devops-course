@@ -62,7 +62,14 @@ tar -cvf linux_course.tar ./linux_course
 gzip linux_course.tar
 #Verify the archive's contents without extracting it.
 tar -tvf linux_course.tar.gz
-
+******
+Manually Purge the Linux Cache
+If vmmemWSL stays high even when Minikube is idle, it’s because Linux is using your RAM to "cache" files. You can force-release this memory by running this command inside your Ubuntu terminal: 
+Hacker News
+Hacker News
+ +1
+bash
+sudo sh -c "echo 3 > /proc/sys/vm/drop_caches"
 
 
 

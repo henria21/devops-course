@@ -1,0 +1,21 @@
+deploymentMode: SingleBinary
+
+loki:
+  auth_enabled: false
+  useTestSchema: true
+  storage:
+    type: filesystem
+  commonConfig:
+    replication_factor: 1
+
+# This is the correct path for the loki-stack bundle
+grafana:
+  enabled: false # Set to true ONLY if you want loki-stack to install a NEW grafana
+  sidecar:
+    datasources:
+      enabled: true
+      # This ensures the provisioned loki datasource isn't the default
+      label: grafana_datasource
+      labelValue: "1"
+      searchNamespace: ALL
+      isDefault: false 
