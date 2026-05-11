@@ -1,16 +1,27 @@
-resource "aws_instance" "web" {
-  ami                    = "ami-0c02fb55956c7d316" # Amazon Linux (example)
-  instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.public.id
-  vpc_security_group_ids = [aws_security_group.ssh.id]
-  key_name               = aws_key_pair.generated.key_name
+data "aws_ami" "al2023" {
+  most_recent = true
+  owners      = ["amazon"]
 
-
-  associate_public_ip_address = true
-
-  tags = {
-    Name = "Terraform-Student-Instance"
+  filter {
+    name   = "name"
+    # Matches the latest AL2023 release
+    values = ["al2023-ami-2023*-kernel-6.1-x86_64"]
   }
+}
+
+resource "aws_instance" "web" {
+ ami           = data.aws_ami.al2023.id
+ instance_type = "t3.micro"
+ subnet_id     = aws_subnet.public.id
+ vpc_security_group_ids = [aws_security_group.ssh.id]
+ key_name = aws_key_pair.generated.key_name
+
+
+ associate_public_ip_address = true
+
+ tags = {
+   Name = "Terraform-Student-Instance"
+ }
 }
 
 resource "tls_private_key" "example" {
