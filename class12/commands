@@ -1,3 +1,4 @@
-# devops-course
+# check that you're configured against aws account
+aws sts get-caller-identity
 # create a backend bucket in aws instead of state
 aws s3api create-bucket --bucket devops-course-[NAME_OF_USER] --region eu-west-1 --create-bucket-configuration LocationConstraint=eu-west-1
