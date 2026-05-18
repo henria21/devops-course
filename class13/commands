@@ -1,1 +1,6 @@
-curl -u guest:guest -H "content-type:application/json" -X POST  -d '{ "properties": {}, "routin", "payload": "Order created from curl", "payload_encoding": "string" }' http://localhost:15672/api/exchanges/%2F/amq.default/publish
+curl -u guest:guest -H "content-type:application/json" -X POST -d '{
+  "properties": {},
+  "routing_key": "orders",
+  "payload": "Order created from curl",
+  "payload_encoding": "string"
+}' http://localhost:15672/api/exchanges/%2F/amq.default/publish
