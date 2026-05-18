@@ -1,4 +1,6 @@
 import pika
+import json
+from datetime import datetime
 
 credentials = pika.PlainCredentials('guest', 'guest')
 
@@ -14,7 +16,11 @@ channel.queue_declare(queue=queue_name)
 
 
 def callback(ch, method, properties, body):
-    print(f"Received: {body.decode()}")
+    message = json.loads(body.decode())
+    username = message["username"]
+    event_type = message["event_type"]
+    timestamp = datetime.fromisoformat(message["timestamp"]).strftime("%H:%M")
+    print(f"User {username} triggered {event_type} at {timestamp}")
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
