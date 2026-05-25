@@ -1,0 +1,22 @@
+- name: Deploy website
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Create website
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+            <h1>Hello from Ansible</h1>
+          </html>
+
+    - name: Start nginx
+      service:
+        name: nginx
+        state: started
