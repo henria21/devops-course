@@ -1,0 +1,13 @@
+cd ansible_lab_files
+# Start the lab
+docker compose up -d
+
+# Open a shell on the control node
+docker compose exec ansible-control bash
+
+# Inside the container — test connectivity
+ansible all -m ping
+
+# Run the playbooks
+ansible-playbook playbooks/install_nginx.yml
+ansible-playbook playbooks/deploy_website.yml
