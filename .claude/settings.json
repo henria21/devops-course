@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\henri\\\\source\\\\repos\\\\devops-course\" -Depth 1)",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\henri\\\\source\\\\repos\\\\devops-course\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"^class\\\\d+\" } | Sort-Object { [int]\\($_.Name -replace 'class',''\\) } | Select-Object Name)",
+      "Bash(find \"c:/Users/henri/source/repos\" -maxdepth 3 -name \"*.pptx\" -o -name \"*.ppt\" -o -name \"*.pdf\" 2>/dev/null | head -30)",
+      "Read(//c/Users/henri/source/repos/**)",
+      "Bash(find \"c:/Users/henri/\" -maxdepth 5 -name \"*.pptx\" 2>/dev/null | head -20 *)",
+      "Read(//c/Users/henri/**)",
+      "Read(//c/Users/henri/Downloads/**)",
+      "Read(//c/Users/henri/OneDrive/**)"
+    ]
+  }
+}
